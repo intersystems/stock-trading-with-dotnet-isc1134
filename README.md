@@ -1,4 +1,4 @@
-# stock-trading-with-java-isc1128
+# stock-trading-with-dotnet-isc1134
 
 Summary: This sample DotNet code is for course ISC1134 - Stock Trading with DotNet. 
 For access to this course, register and login at learning.intersystems.com and 

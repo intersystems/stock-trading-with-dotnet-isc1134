@@ -1,8 +1,8 @@
-﻿
-using System;
+﻿using System;
 using InterSystems.Data.IRISClient;
 using InterSystems.XEP;
 using System.Data.SqlClient;
+using System.Data;
 
 
 namespace myApp
@@ -40,7 +40,7 @@ namespace myApp
 				Console.WriteLine("2. Confirm all trades");
 				Console.WriteLine("3. Generate and save multiple trades");
 				Console.WriteLine("4. Retrieve all trades; show execution statistics");
-				Console.WriteLine("5. JDBC Comparison - Create and save multiple trades");
+				Console.WriteLine("5. ADO.NET Comparison - Create and save multiple trades");
 				Console.WriteLine("6. Quit");
 				Console.WriteLine("What would you like to do? ");
 				
@@ -111,20 +111,20 @@ namespace myApp
 					Console.WriteLine("Execution time: " + totalFetch + "ms");
 					break;
 				case "5":
-					Console.WriteLine("How many items to generate using JDBC? ");				
+					Console.WriteLine("How many items to generate using ADO.NET? ");				
 					String inputNum = Console.ReadLine();
-                    int numberJDBC;
-                    Int32.TryParse(inputNum, out numberJDBC);
-					if (numberJDBC <= 0){
+                    int numberADODOTNET;
+                    Int32.TryParse(inputNum, out numberADODOTNET);
+					if (numberADODOTNET <= 0){
 						Console.WriteLine("Number of items has to bigger than 0");
 						break;
 					}
 					//Get sample generated array to store
-					sampleArray = Trade.generateSampleData(numberJDBC);	
+					sampleArray = Trade.generateSampleData(numberADODOTNET);	
 
-					//Save generated trades using JDBC
-					long totalJDBCStore = StoreUsingJDBC(xepPersister,sampleArray);
-					Console.WriteLine("Execution time: " + totalJDBCStore + " ms");
+					//Save generated trades using ADODOTNET
+					long totalADODOTNETStore = StoreUsingADODOTNET(xepPersister,sampleArray);
+					Console.WriteLine("Execution time: " + totalADODOTNETStore + " ms");
 					break;
 				case "6":
 					Console.WriteLine("Exited.");
@@ -174,39 +174,60 @@ namespace myApp
             return endtime - startTime;
 	    }
 
-		public static long StoreUsingJDBC(EventPersister persist, Trade[] sampleArray)
+		public static long StoreUsingADODOTNET(EventPersister persist, Trade[] sampleArray)
 		{
 			long totalTime = new long();
-			
+			long startTime = DateTime.Now.Ticks;
 			//Loop through objects to insert
 			try {
-				long startTime = DateTime.Now.Ticks;
-				String sql = "INSERT INTO Demo.Trade (purchaseDate, purchaseprice, stockName) VALUES (?,?,?)";
-				IRISCommand cmd = new IRISCommand(sql, (IRISADOConnection) persist.GetAdoNetConnection());	
-				IRISParameter date_param = new IRISParameter("purchaseDate", IRISDbType.DateTime);
-				IRISParameter price_param = new IRISParameter("purchasePrice", IRISDbType.Double);
-				IRISParameter name_param = new IRISParameter("stockName", IRISDbType.NVarChar);
-				
-				for (int i=0; i < sampleArray.Length; i++)
-				{
-					//
-					date_param.Value = sampleArray[i].purchaseDate;
-					cmd.Parameters.Add(date_param);	
+					
+                IRISDataAdapter da = new IRISDataAdapter();
+				String ClassName = "Demo.Trade";
 
-					price_param.Value = sampleArray[i].purchasePrice;
-					cmd.Parameters.Add(price_param);
-				
-					name_param.Value = sampleArray[i].stockName;
-					cmd.Parameters.Add(name_param);
-					cmd.ExecuteNonQuery();
-					cmd.Parameters.Clear();
+				IRISADOConnection con = (IRISADOConnection) persist.GetAdoNetConnection();
+
+				String SQL = "select purchaseDate, purchasePrice, stockName from " + ClassName;
+				da.SelectCommand = con.CreateCommand();
+				da.SelectCommand.CommandText = SQL;
+	
+				SQL = "INSERT INTO Demo.Trade (purchaseDate, purchasePrice, stockName) VALUES (?,?,?)";
+	
+				IRISCommand cmd = con.CreateCommand();
+				cmd.CommandText = SQL;
+				da.InsertCommand = cmd;
+	
+				IRISParameter date_param = new IRISParameter("purchaseDate", IRISDbType.DateTime);
+				cmd.Parameters.Add(date_param);
+				date_param.SourceColumn = "purchaseDate";
+
+				IRISParameter price_param = new IRISParameter("purchasePrice", IRISDbType.Double);
+				cmd.Parameters.Add(price_param);
+				price_param.SourceColumn = "purchasePrice";
+
+				IRISParameter Name_param = new IRISParameter("stockName", IRISDbType.NVarChar);
+				cmd.Parameters.Add(Name_param);
+				Name_param.SourceColumn = "stockName";
+	
+				da.TableMappings.Add("Table", ClassName);
+	
+				DataSet ds = new DataSet();
+				da.Fill(ds);
+
+				for (int i=0; i < sampleArray.Length; i++)
+ 				{
+					DataRow newRow = ds.Tables[0].NewRow();
+					newRow["purchaseDate"] = sampleArray[i].purchaseDate;
+					newRow["purchasePrice"] = sampleArray[i].purchasePrice;
+					newRow["stockName"] = sampleArray[i].stockName;
+					ds.Tables[0].Rows.Add(newRow);
 				}
+	
 				
-				
-				Console.WriteLine("Inserted " + sampleArray.Length + " item(s) via JDBC successfully.");
+				da.Update(ds);
+				Console.WriteLine("Inserted " + sampleArray.Length + " item(s) via ADO.NET successfully.");
 				totalTime = DateTime.Now.Ticks - startTime;	
 			} catch (Exception e) {
-				Console.WriteLine("There was a problem storing items using JDBC.\n" + e);
+				Console.WriteLine("There was a problem storing items using ADO.NET.\n" + e);
 			}
 			return totalTime/TimeSpan.TicksPerMillisecond;
 		}

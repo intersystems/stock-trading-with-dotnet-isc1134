@@ -2,14 +2,12 @@
 using InterSystems.Data.IRISClient;
 using InterSystems.XEP;
 using System.Data.SqlClient;
-using System.Data.Common;
-using InterSystems;
-using InterSystems.Data;
+using System.Data;
 
 namespace myApp
 {
     class xepplaystocksTask5
-    { 
+    {
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
@@ -20,7 +18,7 @@ namespace myApp
             String password = "SYS";
             String Namespace = "USER";
             String className = "myApp.Trade";
-            
+
             try {
                 Trade[] sampleArray = null;
 
@@ -30,10 +28,10 @@ namespace myApp
                 Console.WriteLine("Connected to InterSystems IRIS.");
                 xepPersister.DeleteExtent(className);   // remove old test data
                 xepPersister.ImportSchema(className);   // import flat schema
-            
+
                 // Create Event
                 Event xepEvent = xepPersister.GetEvent(className);
-        
+
             // Starting interactive prompt
 			bool always = true;
 			while (always) {
@@ -41,26 +39,26 @@ namespace myApp
 				Console.WriteLine("2. Confirm all trades");
 				Console.WriteLine("3. Generate and save multiple trades");
 				Console.WriteLine("4. Retrieve all trades; show execution statistics");
-				Console.WriteLine("5. JDBC Comparison - Create and save multiple trades");
+				Console.WriteLine("5. ADO.NET Comparison - Create and save multiple trades");
 				Console.WriteLine("6. Quit");
 				Console.WriteLine("What would you like to do? ");
-				
+
 				String option = Console.ReadLine();
 				switch (option) {
 				case "1":
 					//Create trade object
 					Console.WriteLine("Stock name: ");
 					String name = Console.ReadLine();
-					
+
 					Console.WriteLine("Date (YYYY/MM/DD): ");
 					DateTime date;
 					if (DateTime.TryParse(Console.ReadLine(), out date)){
-						
+
 					}
 					else{
 						Console.WriteLine("Invalid date format!");
 					}
-										
+
 					Console.WriteLine("Price: ");
 					String inputPrice = Console.ReadLine();
                     double price;
@@ -69,7 +67,7 @@ namespace myApp
 						Console.WriteLine("Price has to bigger than 0");
 						break;
 					}
-					
+
 					Console.WriteLine("Number of Shares: ");
 					String inputShare = Console.ReadLine();
                     int shares;
@@ -81,7 +79,7 @@ namespace myApp
 
 					Console.WriteLine("Trader name: ");
 					String traderName = Console.ReadLine();
-					
+
 					sampleArray = CreateTrade(name, date, price, shares, traderName, sampleArray);
 					break;
 				case "2":
@@ -91,7 +89,7 @@ namespace myApp
 					sampleArray = null;
 					break;
 				case "3":
-					Console.WriteLine("How many items do you want to generate? ");	
+					Console.WriteLine("How many items do you want to generate? ");
 					String inputNumber = Console.ReadLine();
                     int number;
                     Int32.TryParse(inputNumber, out number);
@@ -101,8 +99,8 @@ namespace myApp
 					}
 					//Get sample generated array to store
 					sampleArray = Trade.generateSampleData(number);
-					
-					
+
+
 					//Save generated trades
 					long totalStore = XEPSaveTrades(sampleArray,xepEvent);
 					Console.WriteLine("Execution time: " + totalStore + "ms");
@@ -113,51 +111,51 @@ namespace myApp
 					Console.WriteLine("Execution time: " + totalFetch + "ms");
 					break;
 				case "5":
-					Console.WriteLine("How many items to generate using JDBC? ");				
+					Console.WriteLine("How many items to generate using ADO.NET? ");
 					String inputNum = Console.ReadLine();
-                    int numberJDBC;
-                    Int32.TryParse(inputNum, out numberJDBC);
-					if (numberJDBC <= 0){
+                    int numberADODOTNET;
+                    Int32.TryParse(inputNum, out numberADODOTNET);
+					if (numberADODOTNET <= 0){
 						Console.WriteLine("Number of items has to bigger than 0");
 						break;
 					}
 					//Get sample generated array to store
-					sampleArray = Trade.generateSampleData(numberJDBC);	
+					sampleArray = Trade.generateSampleData(numberADODOTNET);
 
-					//Save generated trades using JDBC
-					
-					long totalJDBCStore = StoreUsingJDBC(xepPersister, sampleArray);
-					Console.WriteLine("Execution time: " + totalJDBCStore + " ms");
+					//Save generated trades using ADO.NET
+
+					long totalADODOTNETStore = StoreUsingADODOTNET(xepPersister, sampleArray);
+					Console.WriteLine("Execution time: " + totalADODOTNETStore + " ms");
 					break;
 				case "6":
 					Console.WriteLine("Exited.");
 					always = false;
 					break;
-				default: 
+				default:
 					Console.WriteLine("Invalid option. Try again!");
 					break;
-				}				
+				}
 			}
 	        xepEvent.Close();
 	        xepPersister.Close();
-            } catch (Exception e) { 
-                Console.WriteLine("Interactive prompt failed:\n" + e); 
+            } catch (Exception e) {
+                Console.WriteLine("Interactive prompt failed:\n" + e);
             }
         } // end main
-        
+
         public static Trade[] CreateTrade(String stockName, DateTime tDate, double price, int shares, String trader, Trade[] sampleArray)
 	    {
             Trade sampleObject = new Trade(stockName, tDate, price, shares, trader); //
             Console.WriteLine("New Trade: " + shares + " shares of " + stockName + " purchased on date " + tDate.ToString() + " at price " + price + " by " + trader + ".");
-            
+
             int currentSize = 0;
             int newSize = 1;
             if (sampleArray != null)
             {
                 currentSize = sampleArray.Length;
                 newSize = currentSize + 1;
-            } 
-            
+            }
+
             Trade[] newArray = new Trade[ newSize ];
             for (int i=0; i < currentSize; i++)
             {
@@ -176,40 +174,60 @@ namespace myApp
             Console.WriteLine("Saved " + sampleArray.Length + " trade(s).");
             return endtime - startTime;
 	    }
- 
-		public static long StoreUsingJDBC(EventPersister persist, Trade[] sampleArray)
+
+		public static long StoreUsingADODOTNET(EventPersister persist, Trade[] sampleArray)
 		{
 			long totalTime = new long();
-			
+			long startTime = DateTime.Now.Ticks;
 			//Loop through objects to insert
-			try {
-				long startTime = DateTime.Now.Ticks;
-				String sql = "INSERT INTO Demo.Trade (purchaseDate, purchaseprice, stockName) VALUES (?,?,?)";
-				IRISCommand cmd = new IRISCommand(sql, (IRISADOConnection) persist.GetAdoNetConnection());	
-				IRISParameter date_param = new IRISParameter("purchaseDate", IRISDbType.DateTime);
-				IRISParameter price_param = new IRISParameter("purchasePrice", IRISDbType.Double);
-				IRISParameter name_param = new IRISParameter("stockName", IRISDbType.NVarChar);
-				
-				for (int i=0; i < sampleArray.Length; i++)
-				{
-					//
-					date_param.Value = sampleArray[i].purchaseDate;
-					cmd.Parameters.Add(date_param);	
+ 		try {
+             IRISDataAdapter da = new IRISDataAdapter();
+				String ClassName = "Demo.Trade";
 
-					price_param.Value = sampleArray[i].purchasePrice;
-					cmd.Parameters.Add(price_param);
-				
-					name_param.Value = sampleArray[i].stockName;
-					cmd.Parameters.Add(name_param);
-					cmd.ExecuteNonQuery();
-					cmd.Parameters.Clear();
+				IRISADOConnection con = (IRISADOConnection) persist.GetAdoNetConnection();
+
+				String SQL = "select purchaseDate, purchasePrice, stockName from " + ClassName;
+				da.SelectCommand = con.CreateCommand();
+				da.SelectCommand.CommandText = SQL;
+
+				SQL = "INSERT INTO Demo.Trade (purchaseDate, purchasePrice, stockName) VALUES (?,?,?)";
+
+				IRISCommand cmd = con.CreateCommand();
+				cmd.CommandText = SQL;
+				da.InsertCommand = cmd;
+
+				IRISParameter date_param = new IRISParameter("purchaseDate", IRISDbType.DateTime);
+				cmd.Parameters.Add(date_param);
+				date_param.SourceColumn = "purchaseDate";
+
+				IRISParameter price_param = new IRISParameter("purchasePrice", IRISDbType.Double);
+				cmd.Parameters.Add(price_param);
+				price_param.SourceColumn = "purchasePrice";
+
+				IRISParameter Name_param = new IRISParameter("stockName", IRISDbType.NVarChar);
+				cmd.Parameters.Add(Name_param);
+				Name_param.SourceColumn = "stockName";
+
+				da.TableMappings.Add("Table", ClassName);
+
+				DataSet ds = new DataSet();
+				da.Fill(ds);
+
+				for (int i=0; i < sampleArray.Length; i++)
+ 				{
+					DataRow newRow = ds.Tables[0].NewRow();
+					newRow["purchaseDate"] = sampleArray[i].purchaseDate;
+					newRow["purchasePrice"] = sampleArray[i].purchasePrice;
+					newRow["stockName"] = sampleArray[i].stockName;
+					ds.Tables[0].Rows.Add(newRow);
 				}
-				
-				
-				Console.WriteLine("Inserted " + sampleArray.Length + " item(s) via JDBC successfully.");
-				totalTime = DateTime.Now.Ticks - startTime;	
+
+
+				da.Update(ds);
+				Console.WriteLine("Inserted " + sampleArray.Length + " item(s) via ADO.NET successfully.");
+				totalTime = DateTime.Now.Ticks - startTime;
 			} catch (Exception e) {
-				Console.WriteLine("There was a problem storing items using JDBC.\n" + e);
+				Console.WriteLine("There was a problem storing items using ADO.NET.\n" + e);
 			}
 			return totalTime/TimeSpan.TicksPerMillisecond;
 		}
@@ -217,7 +235,7 @@ namespace myApp
 		public static long ViewAll(Event xepEvent)
         {
 			//Create and execute query using EventQuery
-			String sqlQuery = "SELECT * FROM Demo.Trade WHERE purchaseprice > ? ORDER BY stockname, purchaseDate";
+			String sqlQuery = "SELECT * FROM MyApp.Trade WHERE purchaseprice > ? ORDER BY stockname, purchaseDate";
 			EventQuery<Trade> xepQuery = xepEvent.CreateQuery<Trade>(sqlQuery);
 			xepQuery.AddParameter(0);    // find stocks purchased > $0/share (all)
 			long startTime = DateTime.Now.Ticks;

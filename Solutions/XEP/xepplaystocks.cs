@@ -33,60 +33,60 @@ namespace myApp
                 // Create Event
                 Event xepEvent = xepPersister.GetEvent(className);
         
-            // Starting interactive prompt
-			bool always = true;
-			while (always) {
-				Console.WriteLine("1. Make a trade (do not save)");
-				Console.WriteLine("2. Confirm all trades");
-				Console.WriteLine("3. Generate and save multiple trades");
-				Console.WriteLine("4. Retrieve all trades; show execution statistics");
-				Console.WriteLine("5. JDBC Comparison - Create and save multiple trades");
-				Console.WriteLine("6. Quit");
-				Console.WriteLine("What would you like to do? ");
-				
-				String option = Console.ReadLine();
-				switch (option) {
-				
-                // Task 2
-                case "1":
-                    // uncomment below line to run Task 2 - Create Trade 
-                    // Task2CreateTrade(sampleArray);
-					break;
-				case "2":
-                    // uncomment below line to run Task 2 - Save Trade 
-                    // Task2SaveTrade(sampleArray);
-					break;
-                
-                // Task 3
-				case "3":
-                    // uncomment below line to run Task 3
-                    //Task3(sampleArray, xepEvent);
-					break;
-                
-                // Task 5 + Task 6  
-				case "4":
-                    // uncomment below line to run Task 5
-                    // Task5(xepEvent);
-                    // uncomment below line to run Task 6
-                    // Task6(xepEvent);
-					break;
+                // Starting interactive prompt
+                bool always = true;
+                    while (always) {
+                    Console.WriteLine("1. Make a trade (do not save)");
+                    Console.WriteLine("2. Confirm all trades");
+                    Console.WriteLine("3. Generate and save multiple trades");
+                    Console.WriteLine("4. Retrieve all trades; show execution statistics");
+                    Console.WriteLine("5. JDBC Comparison - Create and save multiple trades");
+                    Console.WriteLine("6. Quit");
+                    Console.WriteLine("What would you like to do? ");
 
-                // Task 4    
-				case "5":
-                    // uncomment below line to run Task 4
-                    // Task4(sampleArray, xepPersister);
-					break;
-				case "6":
-					Console.WriteLine("Exited.");
-					always = false;
-					break;
-				default: 
-					Console.WriteLine("Invalid option. Try again!");
-					break;
-				}				
-			}
-	        xepEvent.Close();
-	        xepPersister.Close();
+                    String option = Console.ReadLine();
+                    switch (option) {
+
+                        // Task 2
+                        case "1":
+                            // uncomment below line to run Task 2 - Create Trade
+                            // Task2CreateTrade(sampleArray);
+                            break;
+                        case "2":
+                            // uncomment below line to run Task 2 - Save Trade
+                            // Task2SaveTrade(sampleArray);
+                            break;
+                
+                        // Task 3
+                        case "3":
+                            // uncomment below line to run Task 3
+                            //Task3(sampleArray, xepEvent);
+                            break;
+
+                        // Task 5 + Task 6
+                        case "4":
+                            // uncomment below line to run Task 5
+                            // Task5(xepEvent);
+                            // uncomment below line to run Task 6
+                            // Task6(xepEvent);
+                            break;
+
+                        // Task 4
+                        case "5":
+                            // uncomment below line to run Task 4
+                            // Task4(sampleArray, xepPersister);
+                            break;
+                        case "6":
+                            Console.WriteLine("Exited.");
+                            always = false;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option. Try again!");
+                            break;
+                    }
+			    }
+                xepEvent.Close();
+                xepPersister.Close();
             } catch (Exception e) { 
                 Console.WriteLine("Interactive prompt failed:\n" + e); 
             }

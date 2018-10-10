@@ -18,64 +18,64 @@ namespace myApp
             String Namespace = "USER";
             
             try {
-				//Making connection
-				IRISConnection connection = new IRISConnection();
-				connection.ConnectionString = "Server = " + host + "; Port = " + port + "; Namespace = " +
-										Namespace + "; Password = " + password + "; User ID = " + username;
-				connection.Open();
-				Console.WriteLine("Connected to InterSystems IRIS.");
-						
-				IRIS irisNative = IRIS.CreateIRIS(connection);
-				// Task 5 - Uncomment below line to run task 5
-				// Console.WriteLine("on InterSystems IRIS version: " + irisNative.FunctionString("PrintVersion","^StocksUtil"));		
-				bool always = true;
-				
-				while (always) {
-					Console.WriteLine("1. Test");
-					Console.WriteLine("2. Store stock data");
-					Console.WriteLine("3. View stock data");
-					Console.WriteLine("4. Generate Trades");
-					Console.WriteLine("5. Quit");
-					Console.WriteLine("What would you like to do? ");
-					String option = Console.ReadLine();
-					switch (option) {
-					// Task 1	
-					case "1":
-						// Uncomment below line to run task 1
-						// SetTestGlobal(irisNative);
-						break;
-					
-					// Task 2
-					case "2":
-						// Uncomment below line to run task 2
-						StoreStockData(irisNative, connection);
-						break;
-					
-					// Task 3	
-					case "3":
-						// Uncomment 5 lines below to run task 3
-						// Console.WriteLine("Printing nyse globals...");
-						// long startPrint = DateTime.Now.Ticks; //To calculate execution time
-						// PrintNodes(irisNative, "nyse");
-						// long totalPrint = DateTime.Now.Ticks - startPrint;
-						// Console.WriteLine("Execution time: " + totalPrint/TimeSpan.TicksPerMillisecond + " ms");
-						break;
-					
-					// Task 4
-					case "4":
-						// Uncomment below line to run task 4
-						// GenerateData(irisNative, 10);
-						break;
-					case "5": 
-						Console.WriteLine("Exited.");
-						always = false;
-						break;
-					default: 
-						Console.WriteLine("Invalid option. Try again!");
-						break;
-					}				
-				}				
-				irisNative.Close();
+                //Making connection
+                IRISConnection connection = new IRISConnection();
+                connection.ConnectionString = "Server = " + host + "; Port = " + port + "; Namespace = " +
+                                        Namespace + "; Password = " + password + "; User ID = " + username;
+                connection.Open();
+                Console.WriteLine("Connected to InterSystems IRIS.");
+
+                IRIS irisNative = IRIS.CreateIRIS(connection);
+                // Task 5 - Uncomment below line to run task 5
+                // Console.WriteLine("on InterSystems IRIS version: " + irisNative.FunctionString("PrintVersion","^StocksUtil"));
+                bool always = true;
+
+                while (always) {
+                    Console.WriteLine("1. Test");
+                    Console.WriteLine("2. Store stock data");
+                    Console.WriteLine("3. View stock data");
+                    Console.WriteLine("4. Generate Trades");
+                    Console.WriteLine("5. Quit");
+                    Console.WriteLine("What would you like to do? ");
+                    String option = Console.ReadLine();
+                    switch (option) {
+                    // Task 1
+                    case "1":
+                        // Uncomment below line to run task 1
+                        // SetTestGlobal(irisNative);
+                        break;
+
+                    // Task 2
+                    case "2":
+                        // Uncomment below line to run task 2
+                        // StoreStockData(irisNative, connection);
+                        break;
+
+                    // Task 3
+                    case "3":
+                        // Uncomment 5 lines below to run task 3
+                        // Console.WriteLine("Printing nyse globals...");
+                        // long startPrint = DateTime.Now.Ticks; //To calculate execution time
+                        // PrintNodes(irisNative, "nyse");
+                        // long totalPrint = DateTime.Now.Ticks - startPrint;
+                        // Console.WriteLine("Execution time: " + totalPrint/TimeSpan.TicksPerMillisecond + " ms");
+                        break;
+
+                    // Task 4
+                    case "4":
+                        // Uncomment below line to run task 4
+                        // GenerateData(irisNative, 10);
+                        break;
+                    case "5":
+                        Console.WriteLine("Exited.");
+                        always = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option. Try again!");
+                        break;
+                    }
+                }
+                irisNative.Close();
 			}
 			catch (Exception e) 
 			{

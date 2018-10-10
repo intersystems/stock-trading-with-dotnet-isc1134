@@ -5,16 +5,13 @@ For access to this course, register and login at learning.intersystems.com and
 then navigate to the course page: 
 [Stock Trading with DotNet](https://learning.intersystems.com)
 
-To run these sample solution files, download the files in this repo, 
-comment all files that are not interested in, and run the command below.
+To run these sample solution files, for example using XEP to connect to InterSystems IRIS server, download the files in this repo, and put it in Microsoft Visual Studio IDE.
+Remember to include 3 files in `environment` folder into your working directory. 
+To run code, type in terminal:
 
-```cd Solutions```
+```cd Solutions/XEP```
 
 ```dotnet run ```
-
-Each task corresponds with a step in the course. 
-If you simply would like to view the resulting sample code, 
-view the last task for each section.
 
 ### Contents
 

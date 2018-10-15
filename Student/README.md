@@ -1,0 +1,1 @@
+You can write code into this folder if you want to develop the application by yourself. Remember to copy 3 files from `environment` folder to here.

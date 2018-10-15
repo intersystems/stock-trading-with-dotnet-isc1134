@@ -174,21 +174,14 @@ namespace EFPlay
         {
             Console.Out.Write("Find all traders with which last name? ");
             String personName = Console.ReadLine();
-            var tradersByLastname = (from b in ctx.Persons
-                                     where b.lastname == personName
-                                     orderby b.lastname
-                                     select b).ToList();
+
             Console.WriteLine("Query completed with following results:");
-            foreach (var person in tradersByLastname)
+
+            var traders = ctx.Persons.Where(p => p.lastname == personName).Include(p => p.trades).ToList();
+            foreach(var p in traders)
             {
-                Console.WriteLine(" - " + person.firstname + " " + person.lastname + " with ID: " + person.PersonId);
-                var tradesByLastName = (from b in ctx.Trades
-                                        orderby b.purchaseDate
-                                        where b.trader.lastname == person.lastname
-                                        select b).ToList();
-                Console.WriteLine(" has " + tradesByLastName.Count + " trades: ");
-                foreach (Trade2 trade in tradesByLastName)
-                {
+                Console.WriteLine(" - " + p.firstname + " " + p.lastname + " with ID: " + p.PersonId);
+                foreach (var trade in p.trades) {
                     Console.WriteLine(" Name: " + trade.stockName + " with purchase price " + trade.purchasePrice + " on " + trade.purchaseDate);
                 }
             }
@@ -208,7 +201,6 @@ namespace EFPlay
             Console.WriteLine("Trader\t\tGain\t\tPercent Increase");
             foreach (TestEntity aRow in query)
             {
-                //Int64 id5 = query1[i];
                 int id5 = (int) aRow.trader_PersonID;
                 Person person5 = ctx.Persons.Where(p => p.PersonId == id5).FirstOrDefault();
                 Decimal gain = (Decimal) aRow.gain;

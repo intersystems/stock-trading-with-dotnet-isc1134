@@ -1,3 +1,5 @@
+
+
 using System;
 using InterSystems.Data.IRISClient;
 using InterSystems.Data.IRISClient.ADO;
@@ -10,8 +12,8 @@ namespace myApp
     { 
         static void Main(string[] args)
         {
-            String host = "104.197.75.13";
-            int port = 21652;
+            String host = "localhost";
+            int port = 51773;
             String username = "SuperUser";
             String password = "SYS";
             String Namespace = "USER";

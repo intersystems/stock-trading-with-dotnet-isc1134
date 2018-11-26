@@ -14,7 +14,7 @@ namespace myApp
             Console.WriteLine("Hello World!");
 
             String host = "localhost";
-            int port = 182;
+            int port = 51773;
             String username = "SuperUser";
             String password = "SYS";
             String Namespace = "USER";

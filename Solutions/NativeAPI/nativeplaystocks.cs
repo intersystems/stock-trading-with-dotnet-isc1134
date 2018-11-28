@@ -121,12 +121,12 @@ namespace myApp
 				
 				int id=list.Count;
 				long startConsume = DateTime.Now.Ticks;
-				Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
+
 				for (int i = 0; i < id; i++)
 				{
 					irisNative.Set(list[i],"^nyse",i+1);		
 				}
-				Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
+
 				long totalConsume = DateTime.Now.Ticks - startConsume;
 				Console.WriteLine("Stored natively successfully. Execution time: " + totalConsume/TimeSpan.TicksPerMillisecond + " ms");
 				

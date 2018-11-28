@@ -54,7 +54,7 @@ namespace myApp
                             break;
                         case "2":
                             // uncomment below line to run Task 2 - Save Trade
-                            // Task2SaveTrade(sampleArray);
+                            // Task2SaveTrade(sampleArray, xepEvent);
                             break;
                 
                         // Task 3

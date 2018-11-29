@@ -6,8 +6,8 @@ namespace myApp{
         public String stockName;
         public DateTime purchaseDate;
         public double purchasePrice;
-        int shares;
-        String traderName;
+        public int shares;
+        public String traderName;
         public Trade(){
 
         }

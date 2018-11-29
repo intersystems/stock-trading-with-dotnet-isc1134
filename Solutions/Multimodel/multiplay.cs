@@ -78,8 +78,7 @@ namespace myApp
                 Console.WriteLine("Adding object with name " + stock.name + " founder " + stock.founder + " and mission " + stock.mission);
                 array.Add(stock);
             }
-            string combindedString = string.Join(",", array);
-            xepEvent.Store(combindedString);
+            xepEvent.Store(array.ToArray());
         }
 
         public static void Task4(IRISADOConnection connection, IRIS native, Event xepEvent){
@@ -99,8 +98,7 @@ namespace myApp
                 Console.WriteLine("Adding object with name " + stock.name + " founder " + stock.founder + " and mission " + stock.mission);
                 array.Add(stock);
             }
-            string combindedString = string.Join(",", array);
-            xepEvent.Store(combindedString);
+            xepEvent.Store(array.ToArray());
         }
     }
 }

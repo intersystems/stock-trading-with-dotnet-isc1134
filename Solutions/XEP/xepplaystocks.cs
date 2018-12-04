@@ -6,7 +6,7 @@ using System.Data;
 
 namespace myApp
 {
-    class xepplaystocksTask7
+    class xepplaystocks
     {
         static void Main(string[] args)
         {
@@ -14,7 +14,7 @@ namespace myApp
             Console.WriteLine("Hello World!");
 
             String host = "localhost";
-            int port = 51777;
+            int port = 51773;
             String username = "SuperUser";
             String password = "SYS";
             String Namespace = "USER";
@@ -26,8 +26,8 @@ namespace myApp
                 EventPersister xepPersister = PersisterFactory.CreatePersister();
                 xepPersister.Connect(host, port, Namespace, username, password);
                 Console.WriteLine("Connected to InterSystems IRIS.");
-                xepPersister.DeleteExtent(className);   // remove old test data
-                xepPersister.ImportSchema(className);   // import flat schema
+                xepPersister.DeleteExtent(className);   // Remove old test data
+                xepPersister.ImportSchema(className);   // Import flat schema
             
                 // Create Event
                 Event xepEvent = xepPersister.GetEvent(className);
@@ -49,33 +49,33 @@ namespace myApp
 
                         // Task 2
                         case "1":
-                            // uncomment below line to run Task 2 - Create Trade
+                            // Uncomment below line to run Task 2 - Create Trade
                             sampleArray = Task2CreateTrade(sampleArray);
                             break;
                         case "2":
-                            // uncomment below line to run Task 2 - Save Trade
+                            // Uncomment below line to run Task 2 - Save Trade
                             Task2SaveTrade(sampleArray, xepEvent);
                             sampleArray = null;
                             break;
                 
                         // Task 3
                         case "3":
-                            // uncomment below line to run Task 3
-                            Task3(sampleArray, xepEvent);
+                            // Uncomment below line to run Task 3
+                            //Task3(sampleArray, xepEvent);
                             break;
 
                         // Task 5 + Task 6
                         case "4":
-                            // uncomment below line to run Task 5
-                            Task5(xepEvent);
-                            // uncomment below line to run Task 6
+                            // Uncomment below line to run Task 5
+                            // Task5(xepEvent);
+                            // Uncomment below line to run Task 6
                             // Task6(xepEvent);
                             break;
 
                         // Task 4
                         case "5":
-                            // uncomment below line to run Task 4
-                            Task4(sampleArray, xepPersister);
+                            // Uncomment below line to run Task 4
+                            // Task4(sampleArray, xepPersister);
                             break;
                         case "6":
                             Console.WriteLine("Exited.");
@@ -91,10 +91,10 @@ namespace myApp
             } catch (Exception e) { 
                 Console.WriteLine("Interactive prompt failed:\n" + e); 
             }
-        } // end main
+        }
         
         public static Trade[] Task2CreateTrade(Trade[] sampleArray){
-            //Create trade object
+            // Create trade object
             Console.WriteLine("Stock name: ");
             String name = Console.ReadLine();
             
@@ -129,7 +129,7 @@ namespace myApp
             return tradeArray;
         }
         public static void Task2SaveTrade(Trade[] sampleArray, Event xepEvent){
-            //Save trades
+            // Save trades
             Console.WriteLine("Saving trades...");
             if(sampleArray != null){
                 XEPSaveTrades(sampleArray, xepEvent);
@@ -147,10 +147,10 @@ namespace myApp
             if (number <= 0){
                 Console.WriteLine("Number of items has to bigger than 0");
             }
-            //Get sample generated array to store
+            // Get sample generated array to store
             sampleArray = Trade.generateSampleData(number);
             
-            //Save generated trades
+            // Save generated trades
             long totalStore = XEPSaveTrades(sampleArray,xepEvent);
             Console.WriteLine("Execution time: " + totalStore + "ms");
         }
@@ -163,10 +163,10 @@ namespace myApp
             if (numberADO <= 0){
                 Console.WriteLine("Number of items has to bigger than 0");
             }
-            //Get sample generated array to store
+            // Get sample generated array to store
             sampleArray = Trade.generateSampleData(numberADO);	
 
-            //Save generated trades using ADO
+            // Save generated trades using ADO
             long totalADOStore = StoreUsingADO(xepPersister, sampleArray);
             Console.WriteLine("Execution time: " + totalADOStore + " ms");
         }
@@ -185,7 +185,7 @@ namespace myApp
 
         public static Trade[] CreateTrade(String stockName, DateTime tDate, double price, int shares, String trader, Trade[] sampleArray)
 	    {
-            Trade sampleObject = new Trade(stockName, tDate, price, shares, trader); //
+            Trade sampleObject = new Trade(stockName, tDate, price, shares, trader);
             Console.WriteLine("New Trade: " + shares + " shares of " + stockName + " purchased on date " + tDate.ToString() + " at price " + price + " by " + trader + ".");
             
             int currentSize = 0;
@@ -208,7 +208,7 @@ namespace myApp
 
 	    public static long XEPSaveTrades(Trade[] sampleArray,Event xepEvent)
 	    {
-            long startTime = DateTime.Now.Ticks; //To calculate execution time
+            long startTime = DateTime.Now.Ticks; // To calculate execution time
             xepEvent.Store(sampleArray);
             long endtime = DateTime.Now.Ticks;
             Console.WriteLine("Saved " + sampleArray.Length + " trade(s).");
@@ -219,7 +219,7 @@ namespace myApp
 		{
 			long totalTime = new long();
 			long startTime = DateTime.Now.Ticks;
-			//Loop through objects to insert
+			// Loop through objects to insert
 			try {
 				IRISDataAdapter da = new IRISDataAdapter();
 				String ClassName = "myApp.Trade";
@@ -284,7 +284,7 @@ namespace myApp
 
         public static long ViewAll(Event xepEvent)
         {
-			//Create and execute query using EventQuery
+			// Create and execute query using EventQuery
 			String sqlQuery = "SELECT * FROM MyApp.Trade WHERE purchaseprice > ? ORDER BY stockname, purchaseDate";
 			EventQuery<Trade> xepQuery = xepEvent.CreateQuery<Trade>(sqlQuery);
 			xepQuery.AddParameter(0);    // find stocks purchased > $0/share (all)
@@ -304,7 +304,7 @@ namespace myApp
 
 		public static long ViewAllAfterUpdate(Event xepEvent)
         {
-			//Create and execute query using EventQuery
+			// Create and execute query using EventQuery
 			String sqlQuery = "SELECT * FROM myApp.Trade WHERE purchaseprice > ? ORDER BY stockname, purchaseDate";
 			EventQuery<Trade> xepQuery = xepEvent.CreateQuery<Trade>(sqlQuery);
 			xepQuery.AddParameter("0");    // find stocks purchased > $0/share (all)

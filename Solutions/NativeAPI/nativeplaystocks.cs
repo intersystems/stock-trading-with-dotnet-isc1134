@@ -18,7 +18,7 @@ namespace myApp
             String Namespace = "USER";
             
             try {
-                //Making connection
+                // Making connection
                 IRISConnection connection = new IRISConnection();
                 connection.ConnectionString = "Server = " + host + "; Port = " + port + "; Namespace = " +
                                         Namespace + "; Password = " + password + "; User ID = " + username;
@@ -84,7 +84,7 @@ namespace myApp
 		}
         public static void SetTestGlobal(IRIS irisNative)
         {
-            //Write to a test global
+            // Write to a test global
             irisNative.Set(8888, "^testglobal", "1");
             int globalValue = (int) irisNative.GetInt32("^testglobal", "1");
             Console.WriteLine("The value of ^testglobal(1) is " + globalValue);
@@ -92,11 +92,11 @@ namespace myApp
 
 		public static void StoreStockData(IRIS irisNative, IRISConnection dbconnection)
 		{
-			//Clear global from previous runs
+			// Clear global from previous runs
 			irisNative.Kill("^nyse");
 			Console.WriteLine("Storing stock data using Native API...");
 			
-			//Get stock data using JDBC and write global
+			// Get stock data using JDBC and write global
 			
 			try {
 				String sql = "select top 1000 TransDate, Name, StockClose, StockOpen, High, Low, Volume from Demo.Stock";
@@ -140,7 +140,7 @@ namespace myApp
 		{
 			Console.WriteLine("Iterating over " + globalName + " globals");
 			
-			// iterate over all nodes forwards
+			// Iterate over all nodes forwards
 			IRISIterator iter = irisNative.GetIRISIterator(globalName);
 			Console.WriteLine("walk forwards");
 			foreach (var v in iter){

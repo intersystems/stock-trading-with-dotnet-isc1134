@@ -34,15 +34,15 @@ namespace myApp
 
                 // Task 2
                 // Uncomment the line below to run task 2
-                //Task2(connection);
+                // Task2(connection);
 
                 // Task 3
                 // Uncomment the line below to run task 3
-                //Task3(connection, xepEvent);
+                // Task3(connection, xepEvent);
 
                 // Task 4
                 // Comment out Task 2, Task 3 and uncomment the line below to run task 4
-                //Task4(connection, native, xepEvent);
+                // Task4(connection, native, xepEvent);
 
                 xepEvent.Close();
                 xepPersister.Close();
@@ -72,7 +72,7 @@ namespace myApp
                 stock.name = (string) reader[reader.GetOrdinal("Name")];
                 Console.WriteLine("created stockinfo array.");
             
-                //generate mission and founder names (Native API)
+                // Generate mission and founder names (Native API)
                 stock.founder = "test founder";
                 stock.mission = "some mission statement";
                 Console.WriteLine("Adding object with name " + stock.name + " founder " + stock.founder + " and mission " + stock.mission);
@@ -92,7 +92,7 @@ namespace myApp
                 stock.name = (string) reader[reader.GetOrdinal("Name")];
                 Console.WriteLine("created stockinfo array.");
             
-                //generate mission and founder names (Native API)
+                // Generate mission and founder names (Native API)
                 stock.founder = native.ClassMethodString("%PopulateUtils", "Name");
                 stock.mission = native.ClassMethodString("%PopulateUtils", "Mission");
                 Console.WriteLine("Adding object with name " + stock.name + " founder " + stock.founder + " and mission " + stock.mission);

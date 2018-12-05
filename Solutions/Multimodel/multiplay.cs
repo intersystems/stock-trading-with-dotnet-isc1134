@@ -1,5 +1,3 @@
-
-
 using System;
 using InterSystems.Data.IRISClient;
 using InterSystems.Data.IRISClient.ADO;

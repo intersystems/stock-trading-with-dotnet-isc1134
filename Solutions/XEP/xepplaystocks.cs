@@ -50,11 +50,11 @@ namespace myApp
                         // Task 2
                         case "1":
                             // Uncomment below line to run Task 2 - Create Trade
-                            sampleArray = Task2CreateTrade(sampleArray);
+                            // sampleArray = Task2CreateTrade(sampleArray);
                             break;
                         case "2":
                             // Uncomment below line to run Task 2 - Save Trade
-                            Task2SaveTrade(sampleArray, xepEvent);
+                            // Task2SaveTrade(sampleArray, xepEvent);
                             sampleArray = null;
                             break;
                 

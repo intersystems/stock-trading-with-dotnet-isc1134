@@ -1,17 +1,26 @@
 # stock-trading-with-dotnet-isc1134
 
-Summary: This sample DotNet code is for course ISC1134 - Stock Trading with DotNet. 
-For access to this course, register and login at learning.intersystems.com and 
+Summary: This sample dotnet code is for course ISC1134 - Stock Trading with dotnet. 
+For access to this course, register and login at [learning.intersystems.com](https://learning.intersystems.com) and 
 then navigate to the course page: 
-[Stock Trading with DotNet](https://learning.intersystems.com)
+[Stock Trading with DotNet](https://learning.intersystems.com/course/view.php?name=.NET%20Financial%20Play)
 
-To run these sample solution files, for example using XEP to connect to InterSystems IRIS server, download the files in this repo, and put it in Microsoft Visual Studio IDE.
-Remember to include 3 files in `environment` folder into your working directory. 
-To run code, type in terminal:
+### IDE
 
-```cd Solutions/XEP```
+We recommend to use Visual Studio Code to run this sample code.
 
-```dotnet run ```
+### How to run
+
+In your IDE:
+1. Clone this repo and open the repo in Visual Studio Code.
+2. Copy `C#.csproj`, `InterSystems.Data.IRISClient.dll`, `InterSystems.Data.XEP.dll` from *enviroment* folder into your working directory.
+For example, you want to use XEP to connect to InterSystems IRIS server, put those 3 files in *Solutions/XEP folder*.
+
+In the terminal of Visual Studio Code:
+
+1. Navigate to working directory: ```cd Solutions/XEP```
+
+2. Run: ```dotnet run ```
 
 ### Contents
 

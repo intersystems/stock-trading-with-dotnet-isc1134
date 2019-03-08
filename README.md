@@ -7,7 +7,7 @@ then navigate to the course page:
 
 ### IDE
 
-We recommend you use Visual Studio Code to run this sample code.
+We recommend you use Viusual Studio or Visual Studio Code to run this sample code.
 
 ### How to run
 
@@ -18,16 +18,17 @@ We recommend you use Visual Studio Code to run this sample code.
     If you are using InterSystems Labs, the sample stock data is already loaded. You can skip to the next step.
 
 In your IDE:
-1. Clone this repo and open the repo in Visual Studio Code.
+1. Clone this repo and open the repo in your IDE.
 2. Copy `C#.csproj`, `InterSystems.Data.IRISClient.dll`, `InterSystems.Data.XEP.dll` from *enviroment* folder into your working directory.
 For example, you want to use XEP to connect to InterSystems IRIS database, put those 3 files in *Solutions/XEP* folder.
-3. In each of the *.cs* file, modify the *host* and *password* to be the correct values for your InterSystems IRIS instance. Although *port* and *username* are most likely the defaults, you should verify that the values are correct.
+3. In each of the *.cs* file, modify the *ip* and *password* to be the correct values for your InterSystems IRIS instance. Although *port* and *username* are most likely the defaults, you should verify that the values are correct.
 
 In the terminal of Visual Studio Code:
 
 1. Navigate to working directory: ```cd Solutions/XEP```
 
 2. Run: ```dotnet run ```
+
 
 ### Contents
 

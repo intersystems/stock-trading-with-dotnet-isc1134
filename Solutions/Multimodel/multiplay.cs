@@ -10,7 +10,7 @@ namespace myApp
     { 
         static void Main(string[] args)
         {
-            String host = "localhost";
+            String ip = "localhost";
             int port = 51773;
             String username = "SuperUser";
             String password = "SYS";
@@ -20,7 +20,7 @@ namespace myApp
             try {
                 // Connect to database using EventPersister
                 EventPersister xepPersister = PersisterFactory.CreatePersister();
-                xepPersister.Connect(host, port, Namespace, username, password);
+                xepPersister.Connect(ip, port, Namespace, username, password);
                 Console.WriteLine("Connected to InterSystems IRIS.");
                 xepPersister.DeleteExtent(className);   // remove old test data
                 xepPersister.ImportSchema(className);   // import flat schema

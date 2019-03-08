@@ -20,7 +20,7 @@ namespace myApp
         {
             Console.WriteLine("Hello World!");
 
-            String host = "localhost";
+            String ip = "localhost";
             int port = 51773;
             String username = "SuperUser";
             String password = "SYS";
@@ -28,7 +28,7 @@ namespace myApp
 
             try {
                 IRISADOConnection connect = new IRISADOConnection();
-                connect.ConnectionString = "Server = " + host + "; Port = " + port + "; Namespace =  " + Namespace + "; Password = " + password + "; User ID = " + username;
+                connect.ConnectionString = "Server = " + ip + "; Port = " + port + "; Namespace =  " + Namespace + "; Password = " + password + "; User ID = " + username;
                 connect.Open();
                 Console.WriteLine("Connected to InterSystems IRIS.");
 

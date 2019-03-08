@@ -11,7 +11,7 @@ namespace myApp
         {
             Console.WriteLine("Hello World!");
 
-            String host = "localhost";
+            String ip = "localhost";
             int port = 51773;
             String username = "SuperUser";
             String password = "SYS";
@@ -20,7 +20,7 @@ namespace myApp
             try {
                 // Making connection
                 IRISConnection connection = new IRISConnection();
-                connection.ConnectionString = "Server = " + host + "; Port = " + port + "; Namespace = " +
+                connection.ConnectionString = "Server = " + ip + "; Port = " + port + "; Namespace = " +
                                         Namespace + "; Password = " + password + "; User ID = " + username;
                 connection.Open();
                 Console.WriteLine("Connected to InterSystems IRIS.");

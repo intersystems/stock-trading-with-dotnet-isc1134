@@ -21,6 +21,7 @@ In your IDE:
 1. Clone this repo and open the repo in Visual Studio Code.
 2. Copy `C#.csproj`, `InterSystems.Data.IRISClient.dll`, `InterSystems.Data.XEP.dll` from *enviroment* folder into your working directory.
 For example, you want to use XEP to connect to InterSystems IRIS database, put those 3 files in *Solutions/XEP* folder.
+3. In each of the *.cs* file, modify the *host* and *password* to be the correct values for your InterSystems IRIS instance. Although *port* and *username* are most likely the defaults, you should verify that the values are correct.
 
 In the terminal of Visual Studio Code:
 
